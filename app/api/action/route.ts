@@ -5,9 +5,14 @@ import { getUsage, incrementUsage, resetUsage } from "@/lib/usageStore";
 export async function POST(req: Request) {
   const { email, role }: { email: string; role: UserRole } = await req.json();
 
-  if (!email || !role) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+if (role === "guest") {
+  return NextResponse.json(
+    {
+      message: "Guests have limited access. Please create an account.",
+    },
+    { status: 403 }
+  );
+}
 
   const limits = LIMITS[role];
   const usage = getUsage(email);

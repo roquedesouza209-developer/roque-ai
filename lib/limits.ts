@@ -1,6 +1,12 @@
 export type UserRole = "guest" | "free" | "plus" | "premium" | "pro";
 
-export const LIMITS = {
+export const LIMITS: Record<
+  Exclude<UserRole, "guest">,
+  {
+    maxActions: number;
+    cooldownHours: number;
+  }
+> = {
   free: {
     maxActions: 5,
     cooldownHours: 8,
